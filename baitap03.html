@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài tập 03 - Countdown</title>
+<style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    #timer {
+        font-size: 60px;
+        padding: 20px;
+        color: black;
+    }
+    .warning {
+        color: red;
+        animation: blink 1s infinite;
+    }
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0.2; }
+        100% { opacity: 1; }
+    }
+</style>
+</head>
+<body>
+
+<h1>Đồng Hồ Đếm Ngược</h1>
+<div id="timer">10:00</div>
+
+<script>
+let time = 10 * 60; // 10 phút = 600 giây
+const timer = document.getElementById("timer");
+
+const countdown = setInterval(() => {
+    const min = Math.floor(time / 60);
+    const sec = time % 60;
+
+    timer.textContent =
+        `${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+
+    if (time <= 60) timer.classList.add("warning");
+
+    if (time <= 0) {
+        clearInterval(countdown);
+        alert("Hết giờ!");
+    }
+
+    time--;
+}, 1000);
+</script>
+
+
+
+</body>
+</html>

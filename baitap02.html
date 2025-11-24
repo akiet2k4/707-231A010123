@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài tập 02 - Form đăng ký</title>
+<style>
+    body { font-family: Arial; background: #eef2f5; padding: 20px; }
+    h1 { text-align: center; }
+    form {
+        max-width: 400px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    input[type=text], input[type=email], input[type=password] {
+        width: 100%; padding: 10px; margin-bottom: 15px;
+    }
+    button { width: 100%; padding: 12px; }
+    .success { text-align: center; color: green; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Form Đăng Ký</h1>
+
+<form id="registerForm">
+    <input id="name" type="text" placeholder="Tên đầy đủ">
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Mật khẩu (>=8 ký tự)">
+    <label>
+        <input type="checkbox" id="agree"> Tôi đồng ý điều khoản
+    </label>
+    <button type="submit">Đăng ký</button>
+</form>
+
+<div id="msg" class="success"></div>
+
+<script>
+function isValidEmail(email) {
+    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+}
+
+function isValidPassword(pw) {
+    return pw.length >= 8 &&
+           /[A-Z]/.test(pw) &&
+           /[a-z]/.test(pw) &&
+           /[0-9]/.test(pw);
+}
+
+document.getElementById("registerForm").onsubmit = function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const pw = document.getElementById("password").value;
+    const agree = document.getElementById("agree").checked;
+    const msg = document.getElementById("msg");
+
+    if (!name || !email || !pw) {
+        alert("Vui lòng điền đầy đủ.");
+        return;
+    }
+    if (!isValidEmail(email)) {
+        alert("Email không hợp lệ.");
+        return;
+    }
+    if (!isValidPassword(pw)) {
+        alert("Mật khẩu phải >=8, có hoa, thường, số.");
+        return;
+    }
+    if (!agree) {
+        alert("Bạn phải đồng ý điều khoản!");
+        return;
+    }
+
+       const user = { name, email, pw: btoa(pw) };
+    localStorage.setItem("user", JSON.stringify(user));
+
+    msg.textContent = "Đăng ký thành công!";
+};
+</script>
+
+
+
+</body>
+</html>

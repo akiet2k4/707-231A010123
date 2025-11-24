@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Danh sách sản phẩm</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+    }
+    .search-box {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    input {
+        padding: 10px;
+        width: 250px;
+        font-size: 16px;
+    }
+    button {
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .products {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+    .product {
+        background: white;
+        padding: 15px;
+        width: 220px;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+    .product img {
+        width: 100%;
+        height: 170px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+    .error {
+        color: red;
+        text-align: center;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>Danh sách sản phẩm</h1>
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Nhập tên sản phẩm...">
+    <button onclick="searchProduct()">Tìm kiếm</button>
+</div>
+
+<div id="errorMsg" class="error"></div>
+
+<div id="productList" class="products"></div>
+
+<script>
+
+const products = [
+    { 
+        name: "iPhone 15", 
+        price: 25000000,
+        img: "image/ip15.jpg"
+    },
+    { 
+        name: "Samsung Galaxy S23", 
+        price: 21000000,
+        img: "image/sm.jpg"
+    },
+    { 
+        name: "Xiaomi Redmi Note 13", 
+        price: 5000000,
+        img: "image/rm.jpg"
+    },
+    { 
+        name: "MacBook Pro 2023", 
+        price: 45000000,
+        img: "image/mb.jpg"
+    },
+    { 
+        name: "AirPods Pro 2", 
+        price: 6000000,
+        img: "image/ap.jpg"
+    }
+];
+
+function showProducts(list) {
+    const container = document.getElementById("productList");
+    container.innerHTML = "";
+
+    list.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p>Giá: ${p.price.toLocaleString()} VND</p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function searchProduct() {
+    const input = document.getElementById("searchInput").value.trim();
+    const errorBox = document.getElementById("errorMsg");
+
+    errorBox.textContent = "";
+
+    const sanitizedInput = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    if (sanitizedInput === "") {
+        showProducts(products);
+        return;
+    }
+
+    const keyword = sanitizedInput.toLowerCase();
+
+    const result = products.filter(p =>
+        p.name.toLowerCase().includes(keyword)
+    );
+
+    if (result.length === 0) {
+        errorBox.textContent = "Không tìm thấy sản phẩm nào!";
+        showProducts([]);
+        return;
+    }
+
+    showProducts(result);
+}
+
+
+showProducts(products);
+</script>
+
+</body>
+</html>
